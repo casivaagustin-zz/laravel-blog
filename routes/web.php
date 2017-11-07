@@ -11,6 +11,13 @@
 |
 */
 
-Route::get('/', 'PostController@index');
+use \Illuminate\Http\Request;
 
-Route::get('/post/{id}', 'PostController@view');
+Route::get('/', 'PostController@index')
+    ->name('home');
+
+Route::resource('section', 'SectionController');
+Route::resource('tag', 'TagController');
+Route::resource('post', 'PostController');
+
+
