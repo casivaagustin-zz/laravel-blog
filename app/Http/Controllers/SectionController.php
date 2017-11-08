@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Section;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class SectionController extends Controller
@@ -28,7 +29,7 @@ class SectionController extends Controller
      */
     public function create()
     {
-        //
+        return view('section.create');
     }
 
     /**
@@ -39,7 +40,21 @@ class SectionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $section = $request->get('section');
+
+        try {
+            $newSection = new Section();
+            $newSection->section = $section;
+            $newSection->save();
+            $msg = 'Seccion guardada';
+            $flashType = 'ok';
+        } catch (QueryException $e) {
+            $msg = 'Error al guardar la seccion';
+            $flashType = 'error';
+        }
+
+        return redirect()->route('section.index')
+            ->with($flashType, $msg);
     }
 
     /**
@@ -65,7 +80,9 @@ class SectionController extends Controller
      */
     public function edit(Section $section)
     {
-        //
+        return view('section.edit', [
+            'section' => $section,
+        ]);
     }
 
     /**
@@ -77,7 +94,20 @@ class SectionController extends Controller
      */
     public function update(Request $request, Section $section)
     {
-        //
+        $input_section = $request->get('section');
+
+        try {
+            $section->section = $input_section;
+            $section->save();
+            $msg = 'Seccion guardada';
+            $flashType = 'ok';
+        } catch (QueryException $e) {
+            $msg = 'Error al guardar la seccion';
+            $flashType = 'error';
+        }
+
+        return redirect()->route('section.index')
+            ->with($flashType, $msg);
     }
 
     /**
@@ -88,6 +118,16 @@ class SectionController extends Controller
      */
     public function destroy(Section $section)
     {
-        //
+        try {
+            $section->delete();
+            $msg = 'Seccion Eliminada';
+            $flashType = 'ok';
+        } catch (QueryException $e) {
+            $msg = 'Hay post relacionados a la sección, no se puede borrar';
+            $flashType = 'error';
+        }
+
+        return redirect()->route('section.index')
+            ->with($flashType, $msg);
     }
 }

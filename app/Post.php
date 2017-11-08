@@ -25,4 +25,16 @@ class Post extends Model
     {
         return $this->belongsToMany('App\Tag', 'posts_tags')->get();
     }
+
+    public function usesTag($tag) {
+        $tags = $this->tags();
+
+        foreach ($tags as $t) {
+            if ($t->id == $tag->id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
