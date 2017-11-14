@@ -8,10 +8,16 @@ use App\Section;
 use App\Tag;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['show', 'create', 'index']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -22,8 +28,7 @@ class PostController extends Controller
         $posts = Post::orderByDesc('id')
             ->get();
 
-        return view('posts.index')
-            ->with('posts', $posts);
+        return view('posts.index', ['posts' => $posts]);
     }
 
     /**
@@ -37,18 +42,26 @@ class PostController extends Controller
         $tags = Tag::all();
         return view('posts.create', [
             'sections' => $sections,
-            'tags' => $tags,
+            'tags'     => $tags,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        $rules = [
+            'title'   => 'required|unique:posts',
+            'body'    => 'required',
+            'section' => 'required',
+        ];
+
+        $request->validate($rules);
         $title = $request->get('title');
         $body = $request->get('body');
         $section = $request->get('section');
@@ -82,7 +95,8 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Post  $post
+     * @param  \App\Post $post
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Post $post)
@@ -94,7 +108,8 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Post  $post
+     * @param  \App\Post $post
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Post $post)
@@ -104,16 +119,17 @@ class PostController extends Controller
 
         return view('posts.edit', [
             'sections' => $sections,
-            'post' => $post,
-            'tags' => $tags,
+            'post'     => $post,
+            'tags'     => $tags,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Post  $post
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Post                $post
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Post $post)
@@ -153,7 +169,8 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Post  $post
+     * @param  \App\Post $post
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Post $post)

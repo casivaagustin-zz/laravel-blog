@@ -1,6 +1,16 @@
 @extends('layout')
 
 @section('content')
+{{--  {{dd(session()->all())}}--}}
+  @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+    </div>
+  @endif
   <form action="{{ route('post.store') }}" method="POST">
     <h3>Nuevo Post</h3>
     {{ csrf_field() }}

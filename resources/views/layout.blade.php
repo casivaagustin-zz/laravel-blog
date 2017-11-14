@@ -39,7 +39,7 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ route('tag.index') }}">Tags</a>
           </li>
-          @auth
+          @if (Auth::check())
           <li class="nav-item">
             <a class="nav-link" href="{{ url('/admin/posts') }}">Edit Posts</a>
           </li>
@@ -52,12 +52,11 @@
           <li class="nav-item">
             <a class="nav-link" href="">Logout</a>
           </li>
-
           @else
             <li>
-              <a class="nav-link" href="">Login</a>
+              <a class="nav-link" href="/login">Login</a>
             </li>
-            @endauth
+          @endif
         </ul>
         <a href="{{ route('post.create') }}" class="btn btn-primary ml-1">Nuevo Post</a>
         <a href="{{ route('section.create') }}" class="btn btn-primary ml-1">Nueva Seccion</a>
