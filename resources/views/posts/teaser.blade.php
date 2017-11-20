@@ -14,8 +14,8 @@
     <div class="footer">
       <span class="section">
         <span class="label"><strong>Seccion:</strong></span>
-        <a href="{{ route('section.show', [$post->section()->id]) }}" class="card-link">
-          {{ $post->section()->section }}
+        <a href="{{ route('section.show', [$post->section->id]) }}" class="card-link">
+          {{ $post->section->section }}
         </a>
       </span>
       <span class="tags">

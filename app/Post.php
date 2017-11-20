@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class Post extends Model
 {
-    //
+    protected $hidden = ['section_id', 'created_at', 'updated_at', 'deleted_at'];
+//    protected $visible = ['id', 'title', 'body', 'section'];
 
     public static function getPostsDesc() {
         return DB::table('posts')
@@ -18,7 +19,7 @@ class Post extends Model
 
     public function section()
     {
-        return $this->belongsTo('App\Section')->first();
+        return $this->belongsTo('App\Section');
     }
 
     public function tags()
