@@ -14,11 +14,23 @@
 Route::get('/', 'PostController@index')
     ->name('home');
 
-Route::resource('section', 'SectionController');
-Route::resource('tag', 'TagController');
-Route::resource('post', 'PostController');
+Route::get('/section', 'SectionController@index')
+    ->name('section.index');
 
+Route::get('/tag', 'TagController@index')
+    ->name('tag.index');
 
+Route::get('/section/{id}', 'SectionController@show')
+    ->name('section.show');
+
+Route::get('/tag/{id}', 'TagController@show')
+    ->name('tag.show');
+
+Route::get('/post/{id}', 'PostController@show')
+    ->name('post.show');
 
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('section', 'SectionController', ['except' => ['index', 'show']]);
+Route::resource('tag', 'TagController', ['except' => ['index', 'show']]);
+Route::resource('post', 'PostController', ['except' => ['index', 'show']]);

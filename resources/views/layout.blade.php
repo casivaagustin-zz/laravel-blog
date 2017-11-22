@@ -18,21 +18,21 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
           integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
           crossorigin="anonymous"></script>
+  <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
 <div class="container">
   <div class="flex-center position-ref full-height">
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
       <a class="navbar-brand" href="#">
+        <a class="nav-link" href="{{ route('home') }}">
         @section('title')
-          Mi Mega Blog
+            Mi Mega Blog
         @show
+        </a>
       </a>
       <div class=" navbar-collapse col align-self-end">
         <ul class="navbar-nav ">
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('home') }}">Home</a>
-          </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ route('section.index') }}">Sections</a>
           </li>
@@ -40,17 +40,18 @@
             <a class="nav-link" href="{{ route('tag.index') }}">Tags</a>
           </li>
           @if (Auth::check())
+            <li class="nav-item">
+              <a class="nav-link"  href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">{{ csrf_field() }}</form>
+            </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url('/admin/posts') }}">Edit Posts</a>
+            <a href="{{ route('post.create') }}" class="btn btn-primary ml-1">Nuevo Post</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url('/admin/sections') }}">Edit Sections</a>
+            <a href="{{ route('section.create') }}" class="btn btn-primary ml-1">Nueva Seccion</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url('/admin/tags') }}">Edit Tags</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="">Logout</a>
+            <a href="{{ route('tag.create') }}" class="btn btn-primary ml-1">Nuevo Tag</a>
           </li>
           @else
             <li>
@@ -58,9 +59,6 @@
             </li>
           @endif
         </ul>
-        <a href="{{ route('post.create') }}" class="btn btn-primary ml-1">Nuevo Post</a>
-        <a href="{{ route('section.create') }}" class="btn btn-primary ml-1">Nueva Seccion</a>
-        <a href="{{ route('tag.create') }}" class="btn btn-primary ml-1">Nuevo Tag</a>
       </div>
     </nav>
 

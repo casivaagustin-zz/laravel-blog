@@ -63,8 +63,9 @@ class TagController extends Controller
      * @param  \App\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function show(Tag $tag)
+    public function show($id)
     {
+        $tag = Tag::find($id);
         $posts = $tag->posts();
 
         return view('tag/index')
@@ -78,7 +79,7 @@ class TagController extends Controller
      * @param  \App\Tag  $tag
      * @return \Illuminate\Http\Response
      */
-    public function edit(Tag $tag)
+    public function edit($tag)
     {
         return view('tag.edit', ['tag' => $tag]);
     }

@@ -63,8 +63,9 @@ class SectionController extends Controller
      * @param  \App\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function show(Section $section)
+    public function show($id)
     {
+        $section = Section::find($id);
         $posts = $section->posts();
 
         return view('section/index')
