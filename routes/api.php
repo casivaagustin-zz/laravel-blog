@@ -20,13 +20,23 @@ Route::post('/auth',[
 Route::get( '/posts', [
     'uses'       => 'ApiPostController@index',
 ] );
+
+Route::middleware(['jwt.auth'])->group(function () {
+    Route::get('/section', [
+        'uses' => 'ApiSectionController@index',
+    ]);
+});
+
 Route::post( '/posts', [
     'uses'       => 'ApiPostController@create',
     'middleware' => 'api',
 ] );
+
 Route::delete( '/posts/{id}', [
     'uses'       => 'ApiPostController@delete',
 ] );
+
 Route::put( '/posts/{id}', [
     'uses'       => 'ApiPostController@update',
 ] );
+

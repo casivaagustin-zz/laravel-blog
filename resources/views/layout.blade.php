@@ -19,6 +19,8 @@
           integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
           crossorigin="anonymous"></script>
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
 </head>
 <body>
 <div class="container">
@@ -62,12 +64,14 @@
       </div>
     </nav>
 
-    <div class="content">
+    <div class="content" id="app">
       @section('content')
         Welcome! :)
       @show
+
     </div>
   </div>
 </div>
+<script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

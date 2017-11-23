@@ -7,8 +7,17 @@ use Illuminate\Support\Facades\DB;
 
 class Post extends Model
 {
-    protected $hidden = ['section_id', 'created_at', 'updated_at', 'deleted_at'];
-//    protected $visible = ['id', 'title', 'body', 'section'];
+    protected $hidden = [
+        'section_id',
+        'updated_at',
+        'deleted_at'
+    ];
+
+    protected $appends = [ //Esto añade una field calculada, ver getTagsAttribute
+        'tags'
+    ];
+
+    protected $visible = ['id', 'title', 'body', 'section', 'tags', 'created_at'];
 
     public static function getPostsDesc() {
         return DB::table('posts')
@@ -24,7 +33,12 @@ class Post extends Model
 
     public function tags()
     {
-        return $this->belongsToMany('App\Tag', 'posts_tags')->get();
+        return $this->belongsToMany('App\Tag', 'posts_tags');
+    }
+
+    public function getTagsAttribute() {
+        return $this->tags()
+            ->get();
     }
 
     public function usesTag($tag) {

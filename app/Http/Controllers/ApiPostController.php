@@ -12,23 +12,25 @@ use Illuminate\Support\Facades\Validator;
 
 class ApiPostController extends Controller
 {
-	public function __construct()
-	{
-		$this->middleware('jwt.auth');
-	}
-    public function index(Request $request) {
-        $result = Post::with('section')->paginate(3);
+
+    public function index(Request $request)
+    {
+        $result = Post::with('section')
+            ->paginate(5);
 
         if ($request->get('page', 1) > $result->lastPage()) {
             return new JsonResponse(['error' => 'la pagina no existe'], 400);
         }
-        return Post::with('section')->paginate(3);
+
+        return Post::with('section')
+            ->paginate(5);
     }
 
-    public function create(Request $request) {
+    public function create(Request $request)
+    {
         $json = $request->json()->all();
         $validator = Validator::make($json, [
-            'title' => 'numeric'
+            'title' => 'numeric',
         ]);
         if ($validator->fails()) {
             return new JsonResponse($validator->errors()->all(), 401);
@@ -43,11 +45,13 @@ class ApiPostController extends Controller
         $post->save();
 
         if (!empty($json['tags'])) {
-            $tags = Tag::whereIn('tag', $json['tags'])->get()->keyBy(function ($item) {
+            $tags = Tag::whereIn('tag', $json['tags'])->get()->keyBy(function (
+                $item
+            ) {
                 return strtolower($item->tag);
             });
 
-            foreach ( $json['tags'] as $tag ) {
+            foreach ($json['tags'] as $tag) {
                 if (!empty($tags[strtolower($tag)])) {
                     $postTag = new PostsTags();
                     $postTag->post_id = $post->id;
