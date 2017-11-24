@@ -43203,7 +43203,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }).catch(function (error) {
         _this2.msgs = {
           type: 'error',
-          items: ['Error guardando el Post!', error.response.data.join('|')]
+          items: ['Error guardando el Post!'].concat(error.response.data)
         };
         _this2.showFlash = true;
         console.info(error.response);

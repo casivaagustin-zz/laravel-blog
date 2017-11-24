@@ -77,7 +77,7 @@
           }).catch((error) => {
             this.msgs = {
               type: 'error',
-              items:['Error guardando el Post!', error.response.data.join('|')],
+              items:['Error guardando el Post!'].concat(error.response.data),
             };
             this.showFlash = true;
             console.info(error.response);
