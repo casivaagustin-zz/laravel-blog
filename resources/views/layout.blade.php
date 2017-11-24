@@ -36,6 +36,9 @@
       <div class=" navbar-collapse col align-self-end">
         <ul class="navbar-nav ">
           <li class="nav-item">
+            <a class="nav-link" href="{{ route('spaHome') }}">Posts</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="{{ route('section.index') }}">Sections</a>
           </li>
           <li class="nav-item">
@@ -47,7 +50,7 @@
               <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">{{ csrf_field() }}</form>
             </li>
           <li class="nav-item">
-            <a href="{{ route('post.create') }}" class="btn btn-primary ml-1">Nuevo Post</a>
+            <a href="{{ route('spaPost') }}" class="btn btn-primary ml-1">Nuevo Post</a>
           </li>
           <li class="nav-item">
             <a href="{{ route('section.create') }}" class="btn btn-primary ml-1">Nueva Seccion</a>
@@ -72,6 +75,9 @@
     </div>
   </div>
 </div>
+<script>
+  window.token = '{!! csrf_token() !!}';
+</script>
 <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

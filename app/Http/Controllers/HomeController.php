@@ -19,4 +19,8 @@ class HomeController extends Controller
     public function spaHome() {
         return view('spa.index');
     }
+
+    public function spaPost() {
+        return view('spa.post');
+    }
 }

@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 
 class ApiSectionController extends Controller
 {
-
+	public function __construct() {
+		$this->middleware('jwt.auth')->except(['index']);
+	}
     public function index(Request $request)
     {
         $result = Section::paginate(5);

@@ -17,6 +17,9 @@ Route::get('/', 'PostController@index')
 Route::get('/spa', 'HomeController@spaHome')
     ->name('spaHome');
 
+Route::get('/spa/post', 'HomeController@spaPost')
+    ->name('spaPost');
+
 Route::get('/section', 'SectionController@index')
     ->name('section.index');
 
