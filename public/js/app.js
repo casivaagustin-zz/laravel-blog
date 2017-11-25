@@ -43135,6 +43135,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -43151,6 +43152,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   data: function data() {
     return {
       showFlash: false,
+      errores: {
+        title: false,
+        body: false,
+        section: false
+      },
       msgs: {
         type: 'ok',
         items: []
@@ -43175,19 +43181,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.showFlash = false;
       axios.get('/api/section').then(function (response) {
         _this.sections = response.data.data.map(function (i) {
-          return { text: i.section, value: i.id };
+          return {
+            text: i.section,
+            value: i.id
+          };
         });
       }).catch(function (error) {
         console.error(error);
       });
     },
     setTitle: function setTitle(value) {
+      console.log('titulo', value, this.post);
       this.post.title = value;
     },
     setBody: function setBody(value) {
       this.post.body = value;
     },
     setSeccion: function setSeccion(value) {
+      console.log('seccion', value, this.post);
       this.post.section = value.text;
     },
     createPost: function createPost() {
@@ -43200,10 +43211,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           items: ['Post ' + response.data.title + ' guardado.']
         };
         _this2.showFlash = true;
+        _this2.errores = {
+          title: false,
+          body: false,
+          section: false
+        };
       }).catch(function (error) {
+        var respuesta = error.response.data;
+        ['title', 'body', 'section'].forEach(function (i) {
+          _this2.errores[i] = false;
+          if (respuesta.indexOf('The ' + i + ' field is required.') >= 0) {
+            _this2.errores[i] = true;
+          }
+        });
         _this2.msgs = {
           type: 'error',
-          items: ['Error guardando el Post!'].concat(error.response.data)
+          items: ['Error guardando el Post!'].concat(respuesta)
         };
         _this2.showFlash = true;
         console.info(error.response);
@@ -43274,9 +43297,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['label'],
+  props: ['label', 'conError'],
+  computed: {
+    clase: function clase() {
+      return {
+        'is-invalid': this.conError
+      };
+    }
+  },
   methods: {
     updateValue: function updateValue(event) {
       this.$emit('inputValue', event.target.value);
@@ -43297,9 +43328,26 @@ var render = function() {
     _vm._v(" "),
     _c("input", {
       staticClass: "form-control",
+      class: _vm.clase,
       attrs: { type: "text", id: "input" },
       on: { input: _vm.updateValue }
-    })
+    }),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.conError,
+            expression: "conError"
+          }
+        ],
+        staticClass: "invalid-feedback"
+      },
+      [_vm._v("Required.")]
+    )
   ])
 }
 var staticRenderFns = []
@@ -43373,9 +43421,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['label'],
+  props: ['label', 'conError'],
+  computed: {
+    clase: function clase() {
+      return {
+        'is-invalid': this.conError
+      };
+    }
+  },
   methods: {
     updateValue: function updateValue(event) {
       this.$emit('textareaValue', event.target.value);
@@ -43396,9 +43452,26 @@ var render = function() {
     _vm._v(" "),
     _c("textarea", {
       staticClass: "form-control",
+      class: _vm.clase,
       attrs: { id: "body" },
       on: { input: _vm.updateValue }
-    })
+    }),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.conError,
+            expression: "conError"
+          }
+        ],
+        staticClass: "invalid-feedback"
+      },
+      [_vm._v("Required.")]
+    )
   ])
 }
 var staticRenderFns = []
@@ -43477,9 +43550,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['label', 'opciones'],
+  props: ['label', 'opciones', 'conError'],
+  computed: {
+    clase: function clase() {
+      return {
+        'is-invalid': this.conError
+      };
+    }
+  },
   methods: {
     updateValue: function updateValue(event) {
       var text = this.opciones.filter(function (i) {
@@ -43513,6 +43594,7 @@ var render = function() {
       "select",
       {
         staticClass: "form-control",
+        class: _vm.clase,
         attrs: { id: "select" },
         on: { change: _vm.updateValue }
       },
@@ -43526,6 +43608,22 @@ var render = function() {
         })
       ],
       2
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.conError,
+            expression: "conError"
+          }
+        ],
+        staticClass: "invalid-feedback"
+      },
+      [_vm._v("Required.")]
     )
   ])
 }
@@ -43671,17 +43769,21 @@ var render = function() {
           _c("h3", [_vm._v("Nuevo Post")]),
           _vm._v(" "),
           _c("InputWidget", {
-            attrs: { label: "Titulo" },
+            attrs: { label: "Titulo", conError: _vm.errores.title },
             on: { inputValue: _vm.setTitle }
           }),
           _vm._v(" "),
           _c("TextareaWidget", {
-            attrs: { label: "Cuerpo" },
+            attrs: { label: "Cuerpo", conError: _vm.errores.body },
             on: { textareaValue: _vm.setBody }
           }),
           _vm._v(" "),
           _c("SelectWidget", {
-            attrs: { opciones: _vm.sections, label: "Secciones" },
+            attrs: {
+              opciones: _vm.sections,
+              label: "Secciones",
+              conError: _vm.errores.section
+            },
             on: { selectValue: _vm.setSeccion }
           }),
           _vm._v(" "),
@@ -43696,6 +43798,16 @@ var render = function() {
               staticClass: "btn btn-primary",
               attrs: { value: "Guardar" },
               on: { click: _vm.createPost }
+            }),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "btn btn-info",
+              attrs: { value: "Reset" },
+              on: {
+                click: function($event) {
+                  _vm.showFlash = false
+                }
+              }
             })
           ])
         ],
