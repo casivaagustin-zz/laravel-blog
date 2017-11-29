@@ -13,29 +13,37 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post( '/auth', [
-	'uses' => 'ApiAuthController@authenticate',
-] );
+Route::post('/auth', [
+    'uses' => 'ApiAuthController@authenticate',
+]);
 
-Route::get( '/posts', [
-	'uses' => 'ApiPostController@index',
-] );
+Route::get('/posts', [
+    'uses' => 'ApiPostController@index',
+]);
 
-Route::get( '/section', [
-	'uses' => 'ApiSectionController@index',
-] );
+Route::get('/posts/{id}', [
+    'uses' => 'ApiPostController@show',
+]);
+
+Route::post('/posts', [
+    'uses' => 'ApiPostController@create',
+]);
+
+Route::put('/posts/{id}', [
+    'uses' => 'ApiPostController@update',
+]);
+
+Route::delete('/posts/{id}', [
+    'uses' => 'ApiPostController@destroy',
+]);
+
+Route::get('/section', [
+    'uses' => 'ApiSectionController@index',
+]);
 
 
 //Route::middleware( [ 'jwt.auth' ] )->group( function () {
-Route::post( '/posts', [
-	'uses'       => 'ApiPostController@create',
-] );
-Route::delete( '/posts/{id}', [
-	'uses' => 'ApiPostController@delete',
-] );
+
 //} );
 
-Route::put( '/posts/{id}', [
-	'uses' => 'ApiPostController@update',
-] );
 

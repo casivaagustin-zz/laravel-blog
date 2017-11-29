@@ -7,3 +7,46 @@
 
 // Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+body {
+  color: #444;
+  font-weight: bold;
+  background-color: #000;
+}
+
+.bg-light {
+  background-color: #ff0000!important;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: #000;
+}
+
+a {
+  color: #00ff1f;
+  text-decoration: none;
+}
+
+.card-body {
+  background-color: #ffff;
+  margin-bottom: 10px;
+}
+
+form.form {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.form-control {
+  border: 1px solid #000;
+}
+
+.card-body > div {
+  margin-bottom: 10px;
+}
+
+h1.card-title.mb-1 {
+  margin-bottom: 20px !important;
+}
