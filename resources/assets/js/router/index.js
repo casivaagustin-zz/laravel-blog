@@ -4,7 +4,8 @@ import Router from 'vue-router';
 import PostIndex from '../components/PostIndex';
 import PostView from '../components/PostView';
 import PostForm from '../components/PostCreate';
-import ListIndex from '../components/ListIndex';
+import SectionIndex from '../components/SectionIndex';
+import TagIndex from '../components/TagIndex';
 
 Vue.use(Router);
 
@@ -12,30 +13,39 @@ export default new Router({
    routes: [
        {
            path: '/',
+           name: 'home',
+           component: PostIndex,
+       },
+       {
+           path: '/post',
            name: 'PostIndex',
-           component: PostIndex
-       },
-       {
-           path: '/list',
-           name: 'ListIndex',
-           component: ListIndex
-       },
-       {
-           path: '/:page',
-           name: 'PostIndexPaged',
            props: true,
-           component: PostIndex
+           component: PostIndex,
+           children: [
+               {
+                   path: 'create',
+                   name: 'PostForm',
+                   component: PostForm
+               },
+               {
+                   path: 'show/:id',
+                   name: 'PostView',
+                   props: true ,
+                   component: PostView
+               }
+           ],
        },
        {
-           path: '/post/create',
-           name: 'PostForm',
-           component: PostForm
-       },
-       {
-           path: '/post/:id',
-           name: 'PostView',
+           path: '/sections',
+           name: 'SectionIndex',
            props: true,
-           component: PostView
-       }
+           component: SectionIndex
+       },
+       {
+           path: '/tags',
+           name: 'TagIndex',
+           props: true,
+           component: TagIndex
+       },
    ]
 });

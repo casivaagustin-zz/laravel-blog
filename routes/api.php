@@ -41,6 +41,10 @@ Route::get('/section', [
     'uses' => 'ApiSectionController@index',
 ]);
 
+Route::get('/tags', [
+    'uses' => 'ApiTagController@index',
+]);
+
 
 //Route::middleware( [ 'jwt.auth' ] )->group( function () {
 

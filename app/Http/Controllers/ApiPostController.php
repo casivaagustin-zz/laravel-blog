@@ -17,7 +17,7 @@ class ApiPostController extends Controller
     {
         $result = Post::with('section')
             ->orderBy('id', 'desc')
-            ->paginate(5);
+            ->paginate(20);
 
         if ($request->get('page', 1) > $result->lastPage()) {
             return new JsonResponse(['error' => 'la pagina no existe'], 400);

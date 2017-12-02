@@ -1,8 +1,11 @@
 <template>
     <div class="posts">
-        <div v-if="posts.length">
+        <div v-if="loading == true" class="center-block">
+            Cargando Posts ...
+        </div>
+        <div v-else-if="posts.length">
             <div v-for="post in posts" class="card mb-3 post">
-                <div class="card-body">
+                <div class="card-body" :id="post.id">
                     <h3 class="card-title mb-1">
                         <router-link :to="{ name: 'PostView', params: { id: post.id }}">
                             {{ post.title }}
@@ -14,14 +17,12 @@
                     <TagsShow :tags="post.tags"></TagsShow>
                 </div>
             </div>
-            <div class="pager">
+            <div class="pager" v-if="pager.last_page > 1">
                 <span v-for="n in pager.last_page">
-                    <router-link :to="{ name: 'PostIndexPaged', params: {'page' : n }}">{{ n }}</router-link>&nbsp;
+                    <router-link :to="{ name: 'PostIndex', query: { page : n } }">{{ n }}</router-link>
+                    &nbsp;
                 </span>
             </div>
-        </div>
-        <div v-else-if="loading == true" class="center-block">
-            Cargando Posts ...
         </div>
         <div v-else class="center-block">
             No hay post
@@ -36,41 +37,38 @@
     import FechaShow from './FechaShow.vue';
 
     export default {
+        props: ['page'],
         components: {
             SectionShow,
             TagsShow,
             FechaShow
         },
-        props: ['page'],
         data() {
             return {
-                "loading": true,
-                "posts": [],
-                "pager": null
+                loading: true,
+                posts: [],
+                pager: null
             }
         },
         created: function() {
             this.init();
         },
         watch: {
-            'page': function(old, newData) {
-              this.init();
-            }
+            '$route'(to, from) {
+              this.init(to.query.page);
+            },
         },
         methods: {
-            init: function() {
-                var page = 1;
-
-                if (typeof(this.page) !== 'unidefined') {
-                    page = this.page;
+            init: function(page) {
+                if (typeof(page) === 'undefined') {
+                    page = 1;
                 }
-                this.getPosts(page);
+                this.getTags(page);
             },
-            getPosts: function(page) {
+            getTags: function(page) {
                 var url = '/api/posts?page=' + page;
                 this.loading = true;
                 axios.get(url).then(response => {
-                    console.log(response);
                     this.posts = response.data.data
                     this.pager = response.data;
                     this.loading = false;

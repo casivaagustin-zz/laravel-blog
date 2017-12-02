@@ -63,7 +63,7 @@
     import TagsShow from './TagsShow.vue';
     import FechaShow from './FechaShow.vue';
 
-    export default {
+    export default  {
         components: {
             SectionShow,
             TagsShow,
@@ -93,9 +93,9 @@
                 if (typeof(this.page) !== 'unidefined') {
                     page = this.page;
                 }
-                this.getPosts(page);
+                this.getTags(page);
             },
-            getPosts: function(page) {
+            getTags: function(page) {
                 var url = '/api/posts?page=' + page;
                 this.loading = true;
                 axios.get(url).then(response => {

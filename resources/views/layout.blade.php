@@ -39,7 +39,7 @@
             <a class="nav-link" href="{{ route('spaHome') }}">Posts</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('section.index') }}">Sections</a>
+            <a class="nav-link" href="{{ route('spaSection') }}">Sections</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ route('tag.index') }}">Tags</a>

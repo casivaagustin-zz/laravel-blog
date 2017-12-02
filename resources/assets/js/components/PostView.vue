@@ -69,6 +69,7 @@
             }
         },
         created: function(){
+            console.log(this.params)
             this.getPost(this.id);
             this.loading = true;
         },
